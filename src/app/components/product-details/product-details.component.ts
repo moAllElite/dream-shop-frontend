@@ -2,7 +2,7 @@ import { Component, computed, inject, OnInit, signal, WritableSignal } from '@an
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Route, Routes } from '@angular/router';
 import { ProductService } from '../../services/product.service';
-import { Product } from '../../models/product';
+import { Product } from '../../models/product.model';
 import { filter, map } from 'rxjs';
 
 @Component({

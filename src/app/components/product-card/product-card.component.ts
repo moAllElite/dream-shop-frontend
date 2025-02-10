@@ -2,7 +2,7 @@ import { Component, inject, input } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { ProductService } from '../../services/product.service';
-import { Product } from '../../models/product';
+import { Product } from '../../models/product.model';
 import {  Router } from '@angular/router';
 import { TitleCasePipe, UpperCasePipe } from '@angular/common';
 @Component({

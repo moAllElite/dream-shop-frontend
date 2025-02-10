@@ -1,5 +1,5 @@
-import { Category } from "./category"
-import { Image } from "./image"
+import { Category } from "./category.model"
+import { Image } from "./image.model"
 export interface Product {
     id: number
     name: string
