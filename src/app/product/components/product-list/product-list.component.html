@@ -1,6 +1,8 @@
-@for (product of products(); track $index) {
-  <app-product-card [product]="product" ></app-product-card>
-}@empty {
-  <h1>No items here</h1>
-}
+<div class="main-content">
+  @for (product of products(); track $index) {
+    <app-product-card [product]="product" ></app-product-card>
+  }@empty {
+    <h1>No items here</h1>
+  }
 
+</div>
