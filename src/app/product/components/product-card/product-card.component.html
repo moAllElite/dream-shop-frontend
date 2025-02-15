@@ -4,7 +4,7 @@
     <mat-card-title>{{ product().name | titlecase }}</mat-card-title>
     <mat-card-subtitle>{{ product().brand | uppercase }}</mat-card-subtitle>
   </mat-card-header>
-  <img alt=""  mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of product">
+  <img alt=""  mat-card-image src="http://localhost:8080/api/v1/images/image/download/{{product().id}}" alt="Photo of product">
   <mat-card-content>
     <p>
        {{ product().description }}

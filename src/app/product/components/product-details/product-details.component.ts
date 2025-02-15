@@ -4,10 +4,12 @@ import { ActivatedRoute,} from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import {  map } from 'rxjs';
 import { Product } from '../../models/product.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product-details',
-  imports: [],
+  imports: [CommonModule],
+  standalone:true,
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css'
 })
