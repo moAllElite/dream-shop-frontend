@@ -1,9 +1,9 @@
-import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Route, Routes } from '@angular/router';
+import { ActivatedRoute,} from '@angular/router';
 import { ProductService } from '../../services/product.service';
+import {  map } from 'rxjs';
 import { Product } from '../../models/product.model';
-import { filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
