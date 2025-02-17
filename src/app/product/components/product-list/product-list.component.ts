@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, WritableSignal } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ProductCardComponent } from "../product-card/product-card.component";
@@ -11,11 +11,25 @@ import { ProductCardComponent } from "../product-card/product-card.component";
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
-export class ProductListComponent  implements OnInit{
+export class ProductListComponent{
 
   productService = inject(ProductService);
   public products = toSignal(this.productService.getAllProducts());
-  ngOnInit(): void {
-    console.log(this.products());
+ 
+  centerStyle :any= {
+    display:'flex',
+    justifyContent:'center',
+    flexWrap:'wrap',
+    aligItems:'center'
   }
+  alignStart={
+    display:'flex',
+    justifyContent:'flex-start',
+    flexWrap:'wrap',
+    alignItems:'center',
+    marginLeft:'6.2rem',
+
+  }
+
+
 }

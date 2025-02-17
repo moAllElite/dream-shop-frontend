@@ -1,11 +1,16 @@
 .example-card {
-    max-width: 400px;
-    color: #fff;
-  margin: 1rem 10px 0 0;
+    max-width: 250px;
+    margin: 1rem 10px 0 0;
   }
+
+  /*mat-card{
+    background-color: #f3f3f3;
+    color: black;
+  }*/
+
 img{
   width: 100%;
-  max-width: 800px;
+  max-width: 460px;
 }
 
 

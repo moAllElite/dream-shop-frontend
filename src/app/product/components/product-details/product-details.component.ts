@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css'
 })
-export class ProductDetailsComponent  implements OnInit{
+export class ProductDetailsComponent {
 
   private readonly route :ActivatedRoute= inject(ActivatedRoute);
   private readonly productService:ProductService= inject(ProductService);
@@ -29,8 +29,6 @@ export class ProductDetailsComponent  implements OnInit{
         ))
       )
   );
-  ngOnInit(): void {
-    console.log(this.productId()) ;
-  }
+   
 
 }

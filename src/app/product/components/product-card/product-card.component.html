@@ -1,20 +1,11 @@
 <mat-card class="example-card mat-elevation-z20 " appearance="outlined">
-  <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>{{ product().name | titlecase }}</mat-card-title>
-    <mat-card-subtitle>{{ product().brand | uppercase }}</mat-card-subtitle>
-  </mat-card-header>
-<<<<<<< HEAD:src/app/product/components/product-card/product-card.component.html
-  <img alt=""  mat-card-image src="http://localhost:8080/api/v1/images/image/download/{{product().id}}" alt="Photo of product">
-=======
-  <img  alt=".."   mat-card-image
-         src="http://localhost:8080/api/v1/images/image/download/{{product().images[0].id}}">
->>>>>>> 6322f76abc29d73f630a659db58d8997fd5ab5b3:src/app/components/product-card/product-card.component.html
+
+  <img  alt=".."   mat-card-image class="mt-2"      src="http://localhost:8080/api/v1/images/image/download/{{product().images[0].id}}">
   <mat-card-content>
-    <p>
-       {{ product().category.name | titlecase }}
-    </p>
+    <mat-card-title>{{ product().name | titlecase }}</mat-card-title>
+    <mat-card-subtitle  >{{ product().price| currency:'XOF' }}</mat-card-subtitle>
   </mat-card-content>
+
   <mat-card-actions class="is-centered mb-2">
     <button mat-raised-button (click)="navigateToDetails(product())">voir détails</button>
   </mat-card-actions>

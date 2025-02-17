@@ -67,6 +67,6 @@ export class ProductService {
   public deleteProductById(id:number):Observable<Response>{
     return this.http.delete<Response>(`${this.host}delete/${id}`);
   }
-
+  
 
 }

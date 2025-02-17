@@ -1,7 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import './app/themes/themes.css';
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+   font-family: Roboto, "Helvetica Neue", sans-serif;
+   background-color: var(--mat-sys-background);
+  color: var(--mat-sys-on-background);
+}
 .is-centered {
   align-items: center;
   justify-content: center;
@@ -14,3 +19,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mb-2 {
   margin-bottom: 10px;
 }
+.ml-2{
+  margin-left: 10px ;
+}
+
+.mt-2{
+  margin-top: 10px;
+}
+

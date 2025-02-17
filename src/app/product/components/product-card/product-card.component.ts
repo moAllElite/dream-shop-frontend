@@ -3,11 +3,11 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { ProductService } from '../../services/product.service';
 import {  Router } from '@angular/router';
-import { TitleCasePipe, UpperCasePipe } from '@angular/common';
+import { CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { Product } from '../../models/product.model';
 @Component({
   selector: 'app-product-card',
-  imports: [MatCardModule,MatButtonModule,UpperCasePipe,TitleCasePipe],
+  imports: [MatCardModule,MatButtonModule,CurrencyPipe,TitleCasePipe],
   standalone:true,
   providers:[ProductService],
   templateUrl: './product-card.component.html',

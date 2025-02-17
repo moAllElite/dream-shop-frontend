@@ -4,13 +4,15 @@ import * as fr from '@angular/common/locales/fr';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
+import { RouterModule } from '@angular/router';
+import { productRoutes } from './product.route';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
+    RouterModule.forChild(productRoutes),
   ],
-
   providers:[
     { provide: LOCALE_ID, useValue: 'fr-FR' }
   ]

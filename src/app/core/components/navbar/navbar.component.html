@@ -1,14 +1,32 @@
 
-<mat-toolbar>
+<mat-toolbar color="warn">
   <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
     <mat-icon>menu</mat-icon>
   </button>
-  <span routerLink="/">My App</span>
+  <span routerLink="/">Dream Shop</span>
+  @for (item of navItem; track item.name) {
+    <div class="button-row ml-2">
+      <a mat-button routerLink="{{ item.route }}">{{ item.name }}</a>
+    </div>
+  }
+
   <span class="example-spacer"></span>
-  <button mat-fab mini  class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-    <mat-icon>favorite</mat-icon>
+   
+  <button mat-icon-button [matMenuTriggerFor]="themeMenu">
+    <mat-icon>format_color_fill</mat-icon>
   </button>
-  <button mat-fab extended  class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
+  <mat-menu #themeMenu>
+      @for (theme of themeService.getThemes(); track theme.id) {
+        <button mat-menu-item (click)="themeService.setTheme(theme.id)">
+          <div class="theme-menu-item">
+            <div
+              class="color-preview"
+              [style.background-color]="theme.primary"
+            ></div>
+            <span>{{ theme.displayName }}</span>
+          </div>
+        </button>
+        }
+
+  </mat-menu>
 </mat-toolbar>
