@@ -31,13 +31,12 @@ export class StepperComponent {
 
   firstFormGroup = this._formBuilder.group({
     name: ['' , Validators.required],
-    inventory:[0,Validators.required],
-    price:[0,Validators.required]
+    inventory:['',Validators.required],
+    price:['',Validators.required]
   });
   secondFormGroup = this._formBuilder.group({
     brand: ['', Validators.required],
     category:['',Validators.required],
     description: ['', Validators.required],
-  
   });
 }
