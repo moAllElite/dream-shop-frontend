@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, signal, WritableSignal} from '@angular/core';
 import {MatStepperModule} from '@angular/material/stepper';
 import {
   FormBuilder,
@@ -6,7 +6,6 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  ValidationErrors,
   Validators
 } from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -15,8 +14,6 @@ import {MatInputModule} from '@angular/material/input';
 import {AuthService} from '../../services/auth.service';
 import {ErrorMessage} from '../../../core/models/error-message';
 import {BearerToken} from '../../models/bearer-token';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {SnackBarComponent} from '../../../core/components/snack-bar/snack-bar.component';
 import { Router } from '@angular/router';
 import {  MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
