@@ -19,13 +19,60 @@ body {
 .mb-2 {
   margin-bottom: 10px;
 }
+.mb-3 {
+  margin-bottom: 25px;
+}
+.mb-4 {
+  margin-bottom: 50px;
+}
+.mb-5 {
+  margin-bottom: 3.5em;
+}
+.mb-6 {
+  margin-bottom: 5em;
+}
 .ml-2{
   margin-left: 10px ;
 }
 .ml-3{
   margin-left: 15px ;
 }
+.ml-4{
+  margin-left: 35px ;
+}
+.ml-5{
+  margin-left: 55px ;
+}
+.ml-6{
+  margin-left: 5em ;
+}
+.mr-2{
+  margin-right: 10px ;
+}
+.mr-3{
+  margin-right: 35px ;
+}
+.mr-4{
+  margin-left: 55px ;
+}
+.mr-5{
+  margin-left: 65px ;
+}
+.mr-6{
+  margin-left: 5em ;
+}
 .mt-2{
   margin-top: 10px;
 }
+
+.mt-3{
+  margin-top: 20px;
+}
+.mt-4{
+  margin-top: 40px;
+}
+.mt-5{
+  margin-top: 60px;
+}
+
 

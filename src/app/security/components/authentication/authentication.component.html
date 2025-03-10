@@ -1,0 +1,47 @@
+<div class="main " >
+  <mat-card class="is-centered">
+    <mat-card-content>
+      <form (ngSubmit)="onLogin()" [formGroup]="formGroup">
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>Enter your email</mat-label>
+            <input
+              matInput
+              placeholder="pat@example.com"
+              [formControl]="emailCtrl"
+              (blur)="updateErrorMessage()"
+              required
+            />
+            @if (emailCtrl.invalid) {
+              <mat-error>{{errorMessage()}}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <mat-form-field>
+          <mat-label>Enter your password</mat-label>
+          <input matInput [type]="hide() ? 'password' : 'text'" />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="clickEvent($event)"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide()"
+          >
+            <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          @if (password?.invalid &&  (password?.dirty )){
+            @if (passwordCtrl.errors?.['required'] ){
+              <mat-error>Le mot de passe est requis</mat-error>
+            }
+          }
+
+        </mat-form-field>
+        <div class="example-container is-centered">
+          <button mat-stroked-button type="submit">Connexion </button>
+        </div>
+      </form>
+
+    </mat-card-content>
+  </mat-card>
+
+</div>

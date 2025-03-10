@@ -1,7 +1,7 @@
-<div class="main-content"
-  [style]="
-    ( products()!.length % 2 === 0 ||  products()!.length % 3 === 0 ||  products()!.length % 5 != 0)
-    ? centerStyle:alignStart">
+<div class="main-content">
+<!--  [style]="-->
+<!--    ( products()!.length % 2 === 0 ||  products()!.length % 3 === 0 ||  products()!.length % 5 != 0)-->
+<!--    ? centerStyle:alignStart">-->
   @for (product of products(); track $index) {
     <app-product-card [product]="product"></app-product-card>
   }
