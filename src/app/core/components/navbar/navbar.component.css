@@ -27,3 +27,6 @@ mat-toolbar button.mat-icon-button {
   height: 24px;
   border-radius: 50%;
 }
+mat-icon{
+  color: var(--mat-sys-primary-container);
+}
