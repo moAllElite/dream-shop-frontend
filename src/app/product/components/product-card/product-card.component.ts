@@ -15,7 +15,9 @@ import { Product } from '../../models/product.model';
 })
 export class ProductCardComponent {
   router:Router = inject(Router);
- product = input.required<Product>();
+ public product = input.required<Product>();
+ image=`http://localhost:8080/api/v1/images/image/download/`
+ imageDefault= 'https://placehold.co/400';
 
  navigateToDetails(product:Product) {
     return this.router.navigateByUrl(`products/${product.id}`)

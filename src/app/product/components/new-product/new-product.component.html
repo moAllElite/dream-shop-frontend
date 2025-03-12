@@ -1,6 +1,58 @@
+<div class="is-centered mt-5">
+<mat-card >
+  <mat-stepper #stepper>
+    <mat-step [stepControl]="form" errorMessage="Les informations du produits sont requises.">
+      <form [formGroup]="form" class="example-form">
+        <ng-template matStepLabel class="mb-5 "
+          errorMessage="Infos produit sont requis"
+        >
+          Remplir les infos du produits
+        </ng-template>
+        <mat-form-field class="ml-3 ">
+          <mat-label>Nom</mat-label>
+          <input matInput placeholder=" Nom du produit" formControlName="name" required>
+        </mat-form-field>
+        <mat-form-field class="ml-3">
+          <mat-label>Inventaire</mat-label>
+          <input matInput placeholder=" Inventaire" formControlName="inventory" required type="number">
+        </mat-form-field >
+        <mat-form-field class="ml-3">
+          <mat-label>Prix Unitaire</mat-label>
+          <input matInput placeholder="Prix unitaire" formControlName="price" required  type="number">
+        </mat-form-field>
+        <div>
+          <p>Informations complémentaires</p>
+          <button mat-button matStepperNext>Suivant</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="form" errorMessage="Les informations complémentaires sont obligatoires.">
+      <form [formGroup]="form" class="example-form">
+        <ng-template matStepLabel class="mb-5">Marque & Categorie</ng-template>
+        <mat-form-field class="ml-3">
+          <mat-label>Marque</mat-label>
+          <input matInput placeholder="Marque" formControlName="brand" required>
+        </mat-form-field>
+        <mat-form-field class="ml-3">
+          <mat-label>Categorie</mat-label>
+          <input matInput placeholder=" Category" formControlName="category" required>
+        </mat-form-field>
+        <mat-form-field class="ml-3">
+          <mat-label>Description</mat-label>
+          <textarea matInput placeholder=" Category" formControlName="description" required></textarea>
+        </mat-form-field>
+        <div>
+          <div class="is-centered">
+            <button mat-button matStepperPrevious class="ml-3">Retour</button>
+            <button mat-stroked-button class="ml-3" (click)="stepper.reset()">Reset</button>
+            <button mat-raised-button class="ml-3" (click)="saveProduct()" [disabled]="form.invalid">Enregistrer</button>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+
+  </mat-stepper>
 
 
-<mat-grid-list cols="2" rowHeight="1:1">
-  <mat-grid-tile class="tile"></mat-grid-tile>
-  <mat-grid-tile><app-stepper></app-stepper></mat-grid-tile>
-</mat-grid-list>
+</mat-card>
+</div>
