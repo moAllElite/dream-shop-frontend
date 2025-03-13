@@ -6,12 +6,13 @@ import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
 import {MatStep, MatStepLabel, MatStepper, MatStepperNext, MatStepperPrevious} from "@angular/material/stepper";
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {AuthService} from '../services/auth.service';
+
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {SnackBarComponent} from '../../core/components/snack-bar/snack-bar.component';
-import {BearerToken} from '../models/bearer-token';
-import {ErrorMessage} from '../../core/models/error-message';
+import { AuthService } from '../../services/auth.service';
+import { SnackBarComponent } from '../../../core/components/snack-bar/snack-bar.component';
+import { BearerToken } from '../../models/bearer-token';
+import { ErrorMessage } from '../../../core/models/error-message';
 
 @Component({
   selector: 'app-register',

@@ -13,7 +13,7 @@ export function loggingInterceptor  (req:HttpRequest<unknown>, next:HttpHandlerF
   }
   // Clone the request to add the authentication header.
   const headers = new HttpHeaders({
-    Authorization: token
+    Authorization:`Bearer ${token}`
   })
   const newReq = req.clone({
     headers: headers,

@@ -1,9 +1,11 @@
 <mat-card class="example-card mat-elevation-z20 " appearance="outlined">
 
-  <img  alt=".."   mat-card-image class="mt-2"      src="http://localhost:8080/api/v1/images/image/download/{{product().images[0].id}}">
+  <img  alt=".."   mat-card-image class="product().images[0] ? mt-2:''"     [src]="
+    product().images[0]?image+product().images[0].id : imageDefault
+  ">
   <mat-card-content>
-    <mat-card-title>{{ product().name | titlecase }}</mat-card-title>
-    <mat-card-subtitle  >{{ product().price| currency:'XOF' }}</mat-card-subtitle>
+    <mat-card-title>{{ product()!.name | titlecase }}</mat-card-title>
+    <mat-card-subtitle  >{{ product()!.price| currency:'XOF' }}</mat-card-subtitle>
   </mat-card-content>
 
   <mat-card-actions class="is-centered mb-2">
