@@ -1,0 +1,11 @@
+<form [formGroup] = "form" class="example-form">
+  <mat-form-field>
+    <mat-label>Image</mat-label>
+    <input matInput placeholder="Image"
+    accept="image/*"
+
+    alt=".jpg, .jpeg, .png"
+    formControlName="image" required type="image">
+  </mat-form-field>
+  <button mat-raised-button class="ml-3" (click)="saveImage()" [disabled]="form.invalid">Enregistrer</button>
+</form>

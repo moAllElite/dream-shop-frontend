@@ -30,8 +30,8 @@ import { Router } from '@angular/router';
   styleUrl: './new-product.component.css'
 })
 export class NewProductComponent  {
-
-  private router:Router= inject(Router);
+    productId!: number;
+    private readonly router:Router= inject(Router);
     productService :ProductService = inject(ProductService);//dependency inject
     private readonly _formBuilder = inject(FormBuilder);// dependency inject formbuilder
     response$!: Subscription;
@@ -44,23 +44,27 @@ export class NewProductComponent  {
       description: new FormControl('', Validators.required),
       image:new FormControl(null)
     });
-
+      /**
+       * add new Product and save it before navigating to the product list
+       */
       saveProduct(){
         this.productService.saveProduct(this.form.value)
         .subscribe(
           {
-            next: (data:ApiResponse):void=>{
-              alert(data.message);
-              this.router.navigateByUrl("/products");
+            next: (response:ApiResponse):void=>{
+              alert(response.message);
+              const result:Product = response.data as Product;
+              this.productId = result.id;
+             // this.router.navigateByUrl("/products");
             },
             error: (err)=>{
               const message = err
                 console.log(err)
             }
           }
-        )
-        ;
-
+        );
       }
+
+
 
   }

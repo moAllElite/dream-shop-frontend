@@ -8,11 +8,11 @@ import { ApiResponse } from '../models/api.response';
   providedIn: 'root'
 })
 export class ProductService {
-  host:string ='http://localhost:8080/api/v1/products';
-  constructor(private readonly http:HttpClient) { }
+  readonly host:string ='http://localhost:8080/api/v1/products';
+  constructor(private readonly http:HttpClient) { } //dependency inject httpClient
 
   /**
-   *
+   * get all products
    * @returns Observable<ArrayList<Product>>
    */
   public getAllProducts():Observable<Product[]>{
@@ -21,7 +21,7 @@ export class ProductService {
   }
 
   /**
-   *
+   * get product by brand
    * @param brand
    * @returns Observable<Product[]>
    */
@@ -29,7 +29,12 @@ export class ProductService {
     return this.http
     .get<Product[]>(`${this.host}/find-by?brand=${brand}`);
   }
-
+  /**
+   * get product by category and brand
+   * @param brand  like apple or samsung
+   * @param name like iphone or galaxy
+   * @returns product
+   */
   public getProductByCategoryAndBrand(brand:string,name:string){
     return this.http
     .get<Product[]>(`${this.host}/by/name-and-brand?brand=${brand}&name=${name}`);
@@ -37,7 +42,7 @@ export class ProductService {
 
 
   /**
-   *
+   * search product by name
    * @param name product
    * @returns Observable<Product[]>
    */
@@ -46,7 +51,7 @@ export class ProductService {
   }
 
   /**
-   *
+   * add new product
    * @param product from Form
    * @returns Response message
    */
@@ -55,7 +60,7 @@ export class ProductService {
   }
 
   /**
-   *
+   * update product informations
    * @param product from  Form
    * @returns Response
    */
@@ -65,6 +70,12 @@ export class ProductService {
   }
 
 
+  /**
+   *
+   * @param id product
+   * @returns Response
+   *delete product by id
+   */
   public deleteProductById(id:number):Observable<Response>{
     return this.http.delete<Response>(`${this.host}delete/${id}`);
   }
