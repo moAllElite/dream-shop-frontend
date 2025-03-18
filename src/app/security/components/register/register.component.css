@@ -1,36 +1,56 @@
 .container {
   display: flex;
+  flex-wrap: wrap-reverse;
+  gap: 1px;
 }
+
 .mat-stepper-horizontal {
   margin-top: 8px;
 }
-
 
 .mat-mdc-form-field {
   margin-top: 16px;
   margin-right: 3.5em;
 }
-.card{
-  max-width: 700px !important;
-  max-height: 500px !important;
-}
-mat-card{
-  min-width: 400px !important;
-  margin:0  5em  0  12% !important;
+
+/* Utilisation de max-width et max-height sans !important pour éviter d'écraser les styles Material */
+
+
+mat-card {
+  min-width: 300px;
+  padding: 0 5px 0 1em;
+  display: grid;
   grid-template-columns: 1fr 1fr;
+  align-items: center;
 }
-.radius-card{
+
+.radius-card {
   border-radius: 4rem;
 }
-.image{
+
+.image {
   aspect-ratio: 1;
   object-fit: cover;
+  width: 550px;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Meilleure gestion du responsive */
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  mat-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
 }
 
 @media (max-height: 800px) {
   .container {
-    display: flex;
-    flex-wrap:wrap ;
+    flex-wrap: wrap-reverse;
   }
-
 }

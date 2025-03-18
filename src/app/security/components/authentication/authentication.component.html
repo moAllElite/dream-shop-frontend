@@ -1,7 +1,7 @@
 <div class="main " >
-  <mat-card class="is-centered">
+  <mat-card class="is-centered class mat-elevation-z8 ">
     <mat-card-content>
-      <form (ngSubmit)="onLogin()" [formGroup]="formGroup">
+      <form [formGroup]="formGroup" (ngSubmit)="onLogin()">
         <div class="example-container">
           <mat-form-field>
             <mat-label>Enter your email</mat-label>
@@ -9,35 +9,47 @@
               matInput
               placeholder="pat@example.com"
               [formControl]="emailCtrl"
-              (blur)="updateErrorMessage()"
+              (blur)="updateErrorEmailMessage()"
               required
             />
+            <button
+              mat-icon-button
+              matSuffix
+            >
+              <mat-icon>mail</mat-icon>
+            </button>
             @if (emailCtrl.invalid) {
-              <mat-error>{{errorMessage()}}</mat-error>
+              <mat-error class="mb-4">{{errorEmailMessage()}}</mat-error>
             }
           </mat-form-field>
         </div>
-        <mat-form-field>
-          <mat-label>Enter your password</mat-label>
-          <input matInput [type]="hide() ? 'password' : 'text'" />
-          <button
-            mat-icon-button
-            matSuffix
-            (click)="clickEvent($event)"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide()"
-          >
-            <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
-          @if (password?.invalid &&  (password?.dirty )){
-            @if (passwordCtrl.errors?.['required'] ){
-              <mat-error>Le mot de passe est requis</mat-error>
+        <div class="example-container">
+          <mat-form-field class="mt-3">
+            <mat-label>Enter your password</mat-label>
+            <input matInput [type]="hide() ? 'password' : 'text'"
+                   [formControl]="passwordCtrl"
+                   (blur)="updateErrorPasswordMessage()"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="clickEvent($event)"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide()"
+            >
+              <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            @if( passwordCtrl.invalid ){
+                <mat-error>{{errorPasswordMessage()}}</mat-error>
             }
-          }
-
-        </mat-form-field>
-        <div class="example-container is-centered">
-          <button mat-stroked-button type="submit">Connexion </button>
+          </mat-form-field>
+        </div>
+        <div class="example-container is-centered mt-2 ">
+          <button matRipple class="mb-4"  matRippleColor="primary"
+                   type="submit"
+                  mat-raised-button color="primary"  [disabled]="!formGroup.valid">
+            Connexion
+          </button>
         </div>
       </form>
 

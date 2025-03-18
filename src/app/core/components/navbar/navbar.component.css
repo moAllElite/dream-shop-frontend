@@ -5,6 +5,9 @@
   display: flex;
   gap: 10px;
 }
+.switcher:hover{
+  background-color: var(--mat-sys-primary);
+}
 
 mat-toolbar {
   justify-content: space-between;
@@ -26,6 +29,7 @@ mat-toolbar button.mat-icon-button {
   width: 24px;
   height: 24px;
   border-radius: 50%;
+  color: var(--mat-sys-on-primary);
 }
 mat-icon{
   color: var(--mat-sys-primary-container);

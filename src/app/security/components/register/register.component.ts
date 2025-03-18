@@ -1,18 +1,20 @@
 import {ChangeDetectionStrategy, Component, inject, signal, WritableSignal} from '@angular/core';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatCard, MatCardContent} from "@angular/material/card";
-import {MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
+import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
 import {MatStep, MatStepLabel, MatStepper, MatStepperNext, MatStepperPrevious} from "@angular/material/stepper";
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-
+import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { AuthService } from '../../services/auth.service';
-import { SnackBarComponent } from '../../../core/components/snack-bar/snack-bar.component';
-import { BearerToken } from '../../models/bearer-token';
-import { ErrorMessage } from '../../../core/models/error-message';
+import {SnackBarComponent} from '../../../core/components/snack-bar/snack-bar.component';
+import {BearerToken} from '../../models/bearer-token';
+import {ErrorMessage} from '../../../core/models/error-message';
+import {merge} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-register',
@@ -26,41 +28,69 @@ import { ErrorMessage } from '../../../core/models/error-message';
         MatInput,
         MatLabel,
         MatStep,
+        ReactiveFormsModule,
         MatStepLabel,
         MatStepper,
         MatStepperNext,
+        MatError,
         MatStepperPrevious,
         MatSuffix,
-        ReactiveFormsModule
     ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styleUrl: './register.component.css',
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: {showError: true},
+    },
+  ],
 })
 export class RegisterComponent {
   _formBuilder:FormBuilder  = inject(FormBuilder);
   authService:AuthService = inject(AuthService);
+  // register's form control
+  firstName:FormControl=new FormControl('', [Validators.required]);
+  lastName:FormControl=new FormControl('', [Validators.required]);
+  email:FormControl=new FormControl('', [Validators.required,Validators.email]);
+  password:FormControl=new FormControl('', [Validators.required,Validators.min(3)]);
   formGroup:FormGroup= this._formBuilder.group({
-    firstName:new FormControl('', [Validators.required,Validators.min(3)]),
-    lastName:new FormControl('', [Validators.required,Validators.min(3)]),
-    email:new FormControl('', [Validators.required,Validators.email]),
-    password:new FormControl('', [Validators.required,Validators.required]),
+    firstName:this.firstName,
+    lastName:this.lastName,
+    email:this.email,
+    password:this.password,
     role:new FormControl('ROLE_USER'),
   });
   message:WritableSignal<string> = signal('');
-  isLinear :boolean = false;
-
-  /**
-   * lock the stepper
-   */
-  switchLinear ():void {
-    this.isLinear = !this.isLinear;
-  }
+  errorLastNameMessage:WritableSignal<string> = signal('');
+  errorFirstNameMessage:WritableSignal<string> = signal('');
+  errorEmailMessage: WritableSignal<string> = signal('');
+  errorPasswordMessage: WritableSignal<string> = signal('');
 
   private route:Router = inject(Router);
   private _snackBar = inject(MatSnackBar);
 
   durationInSeconds = 5;
+
+  /**
+   * avoid the memory leaks
+   */
+  constructor() {
+    merge(this.lastName.statusChanges, this.lastName.valueChanges)
+      .pipe(takeUntilDestroyed())
+      .subscribe(()=> this.updateErrorLastNameMessage()) ;
+    merge(this.firstName.statusChanges, this.firstName.valueChanges)
+      .pipe(takeUntilDestroyed())
+      .subscribe(()=> this.updateErrorFirstNameMessage()) ;
+
+    merge(this.email.statusChanges, this.email.valueChanges)
+      .pipe(takeUntilDestroyed())
+      .subscribe(()=> this.updateErrorEmailMessage()) ;
+    merge(this.password.statusChanges, this.password.valueChanges)
+    .pipe(takeUntilDestroyed())
+      .subscribe(()=> this.updateErrorPasswordMessage()) ;
+  }
+
 
   /**
    * on snack bar open
@@ -77,14 +107,10 @@ export class RegisterComponent {
 
   /**
    *  We register the user and
-   *  store the token in cookie
+   *  store the token in cookies
    */
 
   onSave():void{
-    //this.formGroup.value.controls('role').setValue("ROLE_USER");
-    if(!this.formGroup.valid){
-      alert('Please fill all fields.');
-    }
     //register user
     this.authService.register(this.formGroup.value).subscribe(
       {
@@ -92,8 +118,6 @@ export class RegisterComponent {
 
           const bearer: BearerToken = response as BearerToken;
           this.authService.setCookieToken(bearer.token); //store the token in cookie
-
-
           this.message.set("Inscription effectuée avec succès!!!")
           this.openSnackBar();
         },
@@ -110,9 +134,7 @@ export class RegisterComponent {
   }
 
 
-  goToLoginPage() {
-    this.route.navigate(["/sign"]).then();
-  }
+  goToLoginPage() {this.route.navigate(["/sign"]).then();}
 
   /**
    * for password hide or show text plain on input form
@@ -123,4 +145,52 @@ export class RegisterComponent {
     event.stopPropagation();
   }
 
+
+
+  /**
+   * display error message when the lastname's field is empty
+   */
+  updateErrorLastNameMessage() {
+    if (this.lastName.hasError('required')) {
+      this.errorLastNameMessage.set('Le nom est requis');
+    }  else {
+      this.errorLastNameMessage.set('');
+    }
+  }
+  /**
+   * display error message when the firstname's field is empty
+   */
+  updateErrorFirstNameMessage() {
+    if (this.firstName.hasError('required')) {
+      this.errorFirstNameMessage.set('Le prénom est requis');
+    }else {
+      this.errorFirstNameMessage.set('');
+    }
+  }
+
+  /**
+   * display error message when the email's field is empty
+   */
+  updateErrorEmailMessage() {
+    if(this.email.hasError('required')) {
+      this.errorEmailMessage.set('L\'email est requis');
+    }else if(this.email.hasError('email')) {
+      this.errorEmailMessage.set('Le format de l\'email est invalide');
+    }else {
+      this.errorEmailMessage.set('');
+    }
+  }
+
+  /**
+   * display error message when the password's field is empty
+   */
+  updateErrorPasswordMessage() {
+    if(this.password.hasError('required')) {
+      this.errorPasswordMessage.set('Le mot de passe est requis');
+    }else if(this.password.hasError('min')) {
+      this.errorPasswordMessage.set('Le mot de passe doit avoir au moins 3 caractères');
+    }else {
+      this.errorPasswordMessage.set(' ');
+    }
+  }
 }

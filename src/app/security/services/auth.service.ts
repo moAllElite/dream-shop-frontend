@@ -26,7 +26,7 @@ export class AuthService {
    * @param user
    */
   public  login(user:User):Observable<BearerToken | ErrorMessage> {
-    return this.http.post<BearerToken>(`${this.HOST}/signin`, user);
+    return this.http.post<BearerToken |ErrorMessage>(`${this.HOST}/signin`, user);
   }
 
   /**
@@ -47,8 +47,8 @@ export class AuthService {
   /**
    * logout by destroying bearer token in the cookie
    */
-  public logout():void{
-
+  public destroyCookieToken():void{
+    this.cookieService.delete('token');
   }
 }
 

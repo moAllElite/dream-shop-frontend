@@ -3,4 +3,5 @@ mat-snackbar {
   container-color: var(--mat-sys-secondary);
   supporting-text-color: var(--mat-sys-primary);
   button-color: var(--mat-sys-primary);
+  text-align: center;
 }
