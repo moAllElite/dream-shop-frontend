@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
 import { ApiResponse } from '../models/api.response';
+import {ErrorMessage} from '../../core/models/error-message';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +17,13 @@ export class ProductService {
    * @returns Observable<ArrayList<Product>>
    */
   public getAllProducts():Observable<Product[]>{
-    return this.http
-    .get<Product[]>(`${this.host}/all`);
+    return this.http.get<Product[]>(`${this.host}`);
   }
 
   /**
    * get product by brand
    * @param brand
-   * @returns Observable<Product[]>
+   * @returns Observable of Product[]
    */
   public getProductByBrand(brand:string):Observable<Product[]>{
     return this.http
@@ -46,8 +46,17 @@ export class ProductService {
    * @param name product
    * @returns Observable<Product[]>
    */
-  public getProductByName(name:string):Observable<Product[]>{
-    return this.http.get<Product[]>(`${this.host}/search/by?name=${name}`);
+  public getProductByName(name:string):Observable<Product>{
+    return this.http.get<Product>(`${this.host}/search/by?name=${name}`);
+  }
+
+  /**
+   * search product by id
+   * @param id of product
+   * @returns Observable<Product[]>
+   */
+  public getProductById(id:number):Observable<Product>{
+    return this.http.get<Product>(`${this.host}/${id}`);
   }
 
   /**
@@ -55,8 +64,8 @@ export class ProductService {
    * @param product from Form
    * @returns Response message
    */
-  public saveProduct(product:Product):Observable<ApiResponse>{
-    return this.http.post<ApiResponse>(`${this.host}/add`,product);
+  public saveProduct(product:Product):Observable<ApiResponse |ErrorMessage>{
+    return this.http.post<ApiResponse | ErrorMessage>(`${this.host}/add`,product);
   }
 
   /**

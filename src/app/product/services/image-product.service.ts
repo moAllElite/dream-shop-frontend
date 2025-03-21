@@ -10,19 +10,16 @@ import { ApiResponse } from '../models/api.response';
 export class ImageProductService {
   private readonly host:string ='http://localhost:8080/api/v1/images';
   constructor(readonly http:HttpClient) { } //dependency inject httpClient
-  /**
-   *
-   * @param imageId show image by id
-   * @returns image
-   */
-  getImagesProduct(imageId: number):Observable<Image> {
-    return this.http.get<Image>(`${this.host}/images/image/download/${imageId}`);
-  }
 
   /*
   * upload image and assign it to product by product id
   */
-  uploadImageProduct(product_id:number,image: Image):Observable<ApiResponse> {
-    return this.http.post<ApiResponse>(`${this.host}/upload?productId=${product_id}`, image);
+  uploadImageProduct(product_id: number, images:FormData):Observable<ApiResponse> {
+    // const files = new FormData();
+    // for (let image of images){
+    //   files.append(image.name,image);
+    // }
+
+    return this.http.post<ApiResponse>(`${this.host}/upload?productId=${product_id}`, images);
   }
 }

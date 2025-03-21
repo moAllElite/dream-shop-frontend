@@ -1,11 +1,42 @@
-<form [formGroup] = "form" class="example-form">
-  <mat-form-field>
-    <mat-label>Image</mat-label>
-    <input matInput placeholder="Image"
-    accept="image/*"
+<form [formGroup]="form" >
+  <h1>Veuillez assigner l'image au produit</h1>
+  <label>ID produit: {{ data.names }}</label>
+  <br>
+  <!-- Aperçu des images sélectionnées -->
+  @if (previewUrls().length > 0) {
+    <div class="preview-container " >
+      <h3>Prévisualisation :</h3>
+      <div class="preview-grid">
+        @for (url of previewUrls(); track url){
+          <img [src]="url" class="preview-image"  alt="..."/>
+        }
+      </div>
+    </div>
+  }
 
-    alt=".jpg, .jpeg, .png"
-    formControlName="image" required type="image">
-  </mat-form-field>
-  <button mat-raised-button class="ml-3" (click)="saveImage()" [disabled]="form.invalid">Enregistrer</button>
+  <br>
+
+  @if (selectedFiles().length > 0) {
+    @for (file of selectedFiles(); track $index) {
+      <p>{{ file.name }}</p>
+      <p>Type : {{ file.type }}</p>
+    }
+  } @else {
+    <p>Aucune image sélectionnée.</p>
+  }
+
+  <div class="container">
+    <input #imageInput hidden type="file"
+           formControlName="image"
+           (change)="onFileSelect($event)" accept="image/*" multiple />
+  </div>
+
+  <button mat-mini-fab class="ml-3 mb-3" (click)="imageInput.click()">
+    <mat-icon>attach_file</mat-icon>
+  </button>
+  <br>
+
+  @if (selectedFiles().length > 0) {
+    <button mat-raised-button (click)="onSave(data.names)">Enregistrer</button>
+  }
 </form>

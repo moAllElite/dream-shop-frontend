@@ -1,7 +1,8 @@
-import { Component, computed, inject, OnInit, WritableSignal } from '@angular/core';
+import {Component, computed, effect, inject, OnInit, Signal, WritableSignal} from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ProductCardComponent } from "../product-card/product-card.component";
+import {Product} from '../../models/product.model';
 
 @Component({
   selector: 'app-product-list',
@@ -14,21 +15,31 @@ import { ProductCardComponent } from "../product-card/product-card.component";
 export class ProductListComponent{
 
   productService = inject(ProductService);
-  public products = toSignal(this.productService.getAllProducts());
- 
-  centerStyle :any= {
+  public products:Signal<Product[] | undefined> = toSignal(this.productService.getAllProducts());
+
+
+  productCount:Signal<number>= computed(
+    ()=> this.products.length,
+  )
+
+  centerStyle = {
     display:'flex',
     justifyContent:'center',
     flexWrap:'wrap',
     aligItems:'center'
   }
-  alignStart={
+  alignStart: {
+    display: string,
+    justifyContent: string,
+    flexWrap: string,
+    alignItems: string,
+    marginLeft: string
+  }={
     display:'flex',
     justifyContent:'flex-start',
     flexWrap:'wrap',
     alignItems:'center',
     marginLeft:'6.2rem',
-
   }
 
 

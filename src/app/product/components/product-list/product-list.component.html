@@ -1,16 +1,17 @@
-@if (products()) {
+@if (products()){
   <div class="main-content"
-    [style]="
-      ( products()!.length % 2 === 0 ||  products()!.length % 3 === 0 ||  products()!.length % 5 != 0)
+       [style]="
+      ( productCount() % 2 === 0  )
      ? centerStyle:alignStart">
-   @for (product of products(); track $index) {
-     <app-product-card [product]="product"></app-product-card>
-   }
+    @for (product of products();track product.id) {
 
- </div>
+      <app-product-card [product]="product"></app-product-card>
+    }
+  </div>
 }@else {
   <div class="main-content"
-  style="display: flex; justify-content: center; align-items: center;">
+       style="display: flex; justify-content: center; align-items: center;">
     <h1>Aucun produits n'est encore ajoutés</h1>
   </div>
 }
+

@@ -1,20 +1,14 @@
-<button mat-raised-button (click)="switchLinear()" id="toggle-linear" class="mt-3 ml-6 mb-2">
-  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
-</button>
-
-
 <mat-card class=" container  mt-3 mb-6">
   <mat-card-content>
     <div class="container  mb-5 radius-card" >
       <figure >
         <img  class="image radius-card" alt="..."
               src="https://images.pexels.com/photos/7319306/pexels-photo-7319306.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-
         />
       </figure>
       <div class="card ">
         <h1 style="text-align: center;align-items: center" >Créér un compte</h1>
-        <mat-stepper [linear]="isLinear" #stepper >
+        <mat-stepper   #stepper >
 
           <mat-step [stepControl]="formGroup">
 
@@ -22,11 +16,17 @@
               <ng-template matStepLabel>Entrer votre nom complet</ng-template>
               <mat-form-field>
                 <mat-label>Nom</mat-label>
-                <input matInput placeholder="Entrer le nom" formControlName="lastName" required>
+                <input matInput placeholder="Entrer le nom" formControlName="lastName"
+                       (blur)="updateErrorLastNameMessage()"
+                       required>
+                <mat-error>{{errorLastNameMessage()}}</mat-error>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Prénom</mat-label>
-                <input matInput placeholder="Entrer le prénom" formControlName="firstName" required>
+                <input matInput placeholder="Entrer le prénom" formControlName="firstName"
+                       (blur)="updateErrorFirstNameMessage()"
+                       required>
+                <mat-error>{{errorFirstNameMessage()}}</mat-error>
               </mat-form-field>
               <div>
                 <button mat-button matStepperNext class="mt-2">Suivant</button>
@@ -40,11 +40,15 @@
                        <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
                         required>-->
                 <mat-label>Email</mat-label>
-                <input matInput placeholder="Email" formControlName="email" required>
+                <input matInput placeholder="Email"
+                       (blur)="updateErrorEmailMessage()"
+                       formControlName="email" required>
+                <mat-error>{{errorEmailMessage()}}</mat-error>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Mot de passe</mat-label>
                 <input [type]="hide() ? 'password' : 'text'"
+                       (blur)="updateErrorPasswordMessage()"
                        matInput placeholder="mot de passe" formControlName="password" required>
                 <button
                   mat-icon-button
@@ -55,6 +59,7 @@
                 >
                   <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
+                <mat-error>{{errorPasswordMessage()}}</mat-error>
               </mat-form-field>
               <div>
                 <div >
