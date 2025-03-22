@@ -15,6 +15,8 @@ mat-toolbar {
   color: var(--mat-sys-on-primary);
 }
 
+
+
 mat-toolbar button.mat-icon-button {
   color: var(--mat-sys-on-primary);
 }
@@ -33,4 +35,21 @@ mat-toolbar button.mat-icon-button {
 }
 mat-icon{
   color: var(--mat-sys-primary-container);
+}
+
+/**
+ autocomplete form
+ */
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+.demo-section + .demo-section {
+  margin-top: 16px;
 }

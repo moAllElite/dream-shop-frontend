@@ -11,28 +11,25 @@
   }
 
   <span class="example-spacer"></span>
-
-
-  <button mat-icon-button class="switcher"  [matMenuTriggerFor]="themeMenu" class="ml-2">
-    <mat-icon>format_color_fill</mat-icon>
-  </button>
-  <mat-menu #themeMenu>
-      @for (theme of themeService.getThemes(); track theme.id) {
-        <button mat-menu-item (click)="themeService.setTheme(theme.id)">
-          <div class="theme-menu-item">
-            <div
-              class="color-preview"
-              [style.background-color]="theme.primary"
-            ></div>
-            <span>{{ theme.displayName }}</span>
-          </div>
-        </button>
+  <!--search product-->
+  <form class="example-form ">
+    <mat-form-field class="example-full-width mt-3">
+      <mat-label>Nom du produit</mat-label>
+      <input type="text" matInput
+             [formControl]="productNameControl" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        @for (option of filteredOptions | async; track option) {
+          <mat-option [value]="option">{{option.name}}</mat-option>
         }
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
 
-  </mat-menu>
+
+<div class="ml-5">
   @if (isAuthenticated()){
-    <a  mat-raised-button
-      (click)="logout()" class="ml-2">
+    <a  mat-raised-button class="ml-2"
+        (click)="logout()" >
       <mat-icon>power_settings_new</mat-icon>
       Déconnexion
     </a>
@@ -44,4 +41,27 @@
       </a>
     }
   }
+</div>
+
+  <button mat-icon-button class="ml-2"  [matMenuTriggerFor]="themeMenu"  >
+    <mat-icon>format_color_fill</mat-icon>
+  </button>
+  <mat-menu #themeMenu>
+    @for (theme of themeService.getThemes(); track theme.id) {
+      <button mat-menu-item (click)="themeService.setTheme(theme.id)">
+        <div class="theme-menu-item">
+          <div
+            class="color-preview"
+            [style.background-color]="theme.primary"
+          ></div>
+          <span>{{ theme.displayName }}</span>
+        </div>
+      </button>
+    }
+
+  </mat-menu>
+  <!-- badge panier -->
+  <div class="demo-section ml-2 mt-2" >
+    <mat-icon matBadge="{{countCartItems()}}">shopping_cart</mat-icon>
+  </div>
 </mat-toolbar>

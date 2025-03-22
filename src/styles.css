@@ -76,3 +76,6 @@ body {
 }
 
 
+.primary{
+  background-color: var(--mat-sys-primary);
+}

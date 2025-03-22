@@ -1,8 +1,8 @@
 <mat-card class="example-card mat-elevation-z20 " appearance="outlined">
 
-  <img  alt=".."   mat-card-image class="product().images[0] ? mt-2:''"     [src]="
-    product().images[0]?image+product().images[0].id : imageDefault
-  ">
+  <img  alt=".."   mat-card-image [class]="product().images[0] ? 'mt-1 mb-2':'mb-2'"
+        [src]="product().images[0]?image+product().images[0].id : imageDefault
+  " >
   <mat-card-content class="mb-2">
     <mat-card-title>{{ product()!.name | titlecase }}</mat-card-title>
     <mat-card-subtitle  >{{ product()!.price| currency:'XOF' }}</mat-card-subtitle>

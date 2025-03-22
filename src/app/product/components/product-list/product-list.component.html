@@ -1,17 +1,47 @@
-@if (products()){
-  <div class="main-content"
-       [style]="
+<mat-drawer-container class="example-container" autosize>
+    <!--drawer content -->
+    <mat-drawer #drawer class="example-sidenav" mode="side">
+      <!--values-->
+      <div class="example-label-container">
+        <label id="example-name-label" class="example-name-label">Value</label>
+        {{min()}} - {{max()}}
+      </div>
+      <!-- product filtered with range price -->
+        <mat-slider [min]="min" [max]="max">
+          <input value="300" matSliderStartThumb>
+          <input value="400" matSliderEndThumb >
+        </mat-slider>
+      <!-- price filter with slider -->
+
+    </mat-drawer>
+    <!-- end drawer content -->
+
+  <div style="display:block;">
+  <div class="example-sidenav-content" >
+    <button type="button" mat-button class="mt-2 ml-6 primary" (click)="drawer.toggle()">
+      Recherche approfondie
+    </button>
+  </div>
+  <!-- list of products -->
+
+  @if (products()){
+    <div class="main-content"
+         [style]="
       ( productCount() % 2 === 0  )
      ? centerStyle:alignStart">
-    @for (product of products();track product.id) {
+      @for (product of products();track product.id) {
 
-      <app-product-card [product]="product"></app-product-card>
-    }
+        <app-product-card [product]="product"></app-product-card>
+      }
+    </div>
+  }@else {
+    <div class="main-content"
+         style="display: flex; justify-content: center; align-items: center;">
+      <h1>Aucun produits n'est encore ajoutés</h1>
+    </div>
+  }
+
   </div>
-}@else {
-  <div class="main-content"
-       style="display: flex; justify-content: center; align-items: center;">
-    <h1>Aucun produits n'est encore ajoutés</h1>
-  </div>
-}
+  <!-- end list of products -->
+</mat-drawer-container>
 

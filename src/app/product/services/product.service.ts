@@ -21,6 +21,15 @@ export class ProductService {
   }
 
   /**
+   * filter products By minimum price & maximum
+   * @param min_price
+   * @param max_price
+   */
+  public searchByRangePriceProducts(min_price:number,max_price:number):Observable<Product[]>{
+    return this.http.get<Product[]>(`${this.host}/prices?min=${min_price}&max=${max_price}`);
+  }
+
+  /**
    * get product by brand
    * @param brand
    * @returns Observable of Product[]
