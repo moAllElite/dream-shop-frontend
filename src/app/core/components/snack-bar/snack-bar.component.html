@@ -1,7 +1,8 @@
-<span class="custom-snack" matSnackBarLabel>
+<div class="custom-snack" >
+<span matSnackBarLabel>
   {{message}}
 </span>
-<span matSnackBarActions>
-  <button mat-button matSnackBarAction (click)="snackBarRef.dismissWithAction()">Fermer</button>
+  <span matSnackBarActions>
+  <button mat-button matSnackBarAction (click)="hideSnackBar()">Fermer</button>
 </span>
-
+</div>

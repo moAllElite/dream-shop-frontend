@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {User} from '../models/user';
+import {User} from '../../user/models/user.model';
 import {Observable} from 'rxjs';
 import {BearerToken} from '../models/bearer-token';
 import {ErrorMessage} from '../../core/models/error-message';
@@ -10,8 +10,12 @@ import {CookieService} from 'ngx-cookie-service';
   providedIn: 'root'
 })
 export class AuthService {
+  public cookieService: CookieService ;
   private readonly HOST: string = 'http://localhost:8080/api/v1/auth';
-  constructor(private http:HttpClient,private cookieService: CookieService) { }
+  constructor(private http:HttpClient) {
+    this.cookieService = inject(CookieService);
+  }
+
 
   /**
    * register a new user
@@ -50,5 +54,8 @@ export class AuthService {
   public destroyCookieToken():void{
     this.cookieService.delete('token');
   }
+
+
+
 }
 

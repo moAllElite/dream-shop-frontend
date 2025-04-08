@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Product } from '../models/product.model';
+import { ProductPage } from '../models/product.page.model';
 import { ApiResponse } from '../models/api.response';
 import {ErrorMessage} from '../../core/models/error-message';
+import {Product} from '../models/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +15,24 @@ export class ProductService {
 
   /**
    * get all products
-   * @returns Observable<ArrayList<Product>>
+   * @returns Observable<ArrayList<ProductPage>>
    */
-  public getAllProducts():Observable<Product[]>{
-    return this.http.get<Product[]>(`${this.host}`);
+  public getAllProducts( size?:number,page?:number):Observable<ProductPage>{
+    if((size == undefined && page == undefined) || (size == null && page == null)){
+      return this.http.get<ProductPage>(`${this.host}`);
+    }
+    return this.http.get<ProductPage>(`${this.host}?size=${size}&page=${page}`);
   }
+
 
   /**
    * filter products By minimum price & maximum
    * @param min_price
    * @param max_price
    */
-  public searchByRangePriceProducts(min_price:number,max_price:number):Observable<Product[]>{
-    return this.http.get<Product[]>(`${this.host}/prices?min=${min_price}&max=${max_price}`);
+  public searchByRangePriceProducts(min_price:number,max_price:number):Observable<ProductPage>{
+    console.log(`${this.host}/search-by/prices?min=${min_price}&max=${max_price}`)
+    return this.http.get<ProductPage>(`${this.host}/search-by/prices?min=${min_price}&max=${max_price}`);
   }
 
   /**
@@ -36,7 +42,7 @@ export class ProductService {
    */
   public getProductByBrand(brand:string):Observable<Product[]>{
     return this.http
-    .get<Product[]>(`${this.host}/find-by?brand=${brand}`);
+    .get<Product[]>(`${this.host}/search-by?brand=${brand}`);
   }
   /**
    * get product by category and brand
@@ -44,28 +50,28 @@ export class ProductService {
    * @param name like iphone or galaxy
    * @returns product
    */
-  public getProductByCategoryAndBrand(brand:string,name:string){
+  public getProductByCategoryAndBrand(brand:string,name:string):Observable<Product[]>{
     return this.http
-    .get<Product[]>(`${this.host}/by/name-and-brand?brand=${brand}&name=${name}`);
+    .get<Product[]>(`${this.host}/search-by/name-and-brand?brand=${brand}&name=${name}`);
   }
 
 
   /**
    * search product by name
    * @param name product
-   * @returns Observable<Product[]>
+   * @returns Observable<ProductPage[]>
    */
-  public getProductByName(name:string):Observable<Product>{
-    return this.http.get<Product>(`${this.host}/search/by?name=${name}`);
+  public getProductByName(name:string):Observable<ProductPage>{
+    return this.http.get<ProductPage>(`${this.host}/search/by?name=${name}`);
   }
 
   /**
    * search product by id
    * @param id of product
-   * @returns Observable<Product[]>
+   * @returns Observable of Product[]
    */
   public getProductById(id:number):Observable<Product>{
-    return this.http.get<Product>(`${this.host}/${id}`);
+    return this.http.get<Product>(`${this.host}/search-by/${id}`);
   }
 
   /**
@@ -73,7 +79,7 @@ export class ProductService {
    * @param product from Form
    * @returns Response message
    */
-  public saveProduct(product:Product):Observable<ApiResponse |ErrorMessage>{
+  public saveProduct(product:ProductPage):Observable<ApiResponse |ErrorMessage>{
     return this.http.post<ApiResponse | ErrorMessage>(`${this.host}/add`,product);
   }
 
@@ -83,7 +89,7 @@ export class ProductService {
    * @returns Response
    */
 
-  public updateProduct(product:Product):Observable<Response>{
+  public updateProduct(product:ProductPage):Observable<Response>{
     return this.http.put<Response>(`${this.host}update`,product);
   }
 

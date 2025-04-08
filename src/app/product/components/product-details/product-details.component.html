@@ -1,15 +1,63 @@
-<div class=" main">
-  <img [src]="oneImageProduct()?image+oneImageProduct()?.id : imageDefault" alt="">
-<div class="container">
+<!--@defer {-->
+<!--  -->
 
-  <h1>{{ product()?.brand }} {{ product()?.name }}</h1>
-<h1>
-  {{ product()?.category?.name }}</h1>
+<!--} @loading (minimum 1800ms){-->
 
-<h1>{{ product()?.price | currency:'XOF':'code' }}</h1>
-<h1>{{ product()?.inventory }}</h1>
-<h1></h1>
+<!--  <app-loading-spinner></app-loading-spinner>-->
 
-</div>
+<!--} @error {-->
+<!--  <div>Erreur de chargement</div>-->
+<!--}-->
 
-</div>
+@if (product()){
+  <div class="main">
+    <div class="sub-main">
+      <img [src]="imageProduct() ?imageUrl+imageProduct()!.id : imageDefault" alt="" width="800px">
+
+      <div class="container">
+
+        <h1>{{ product()?.brand }} {{ product()?.name }}</h1>
+        <h1>
+          {{ product()?.category?.name }}</h1>
+
+        <h1>{{ product()!.price | currency:'XOF':'code' }}</h1>
+        @if ((product()!.inventory) > 0 ){
+          <span>Disponible</span>
+        } @else {
+          <span>En rupture de stock</span>
+        }
+
+        <form [formGroup]="form">
+
+          <mat-form-field class="example-full-width mr-3 mt-5">
+            <mat-label>Quantité</mat-label>
+            <input matInput maxLength="2" placeholder="0" formControlName="quantity"
+                   (blur)="updateErrorQuantityMessage()"
+                   type="number">
+            <mat-hint >{{quantityControl.value}} / {{product()?.inventory}}</mat-hint>
+            @if (quantityControl.dirty || quantityControl.invalid){
+              <mat-error class="mt-2">{{ errorMessageQuantity()  }}</mat-error>
+            }
+          </mat-form-field>
+          <button mat-fab extended  class="warn"
+            (click)="onAddItemToCart(product()!.id, quantityValue)"
+          >
+            <mat-icon>add_shopping_cart</mat-icon>
+            Ajoutez au panier
+          </button>
+        </form>
+
+      </div>
+
+    </div>
+    <!-- product's image list -->
+    <app-product-image-list
+      [images]="images()"
+      [idImage]="idImage()"
+      (onImageUpdate)="handleImageUpdate($event)"
+    ></app-product-image-list>
+    <!-- product's image list -->
+
+
+  </div>
+}

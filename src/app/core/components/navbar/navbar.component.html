@@ -28,14 +28,14 @@
 
 <div class="ml-5">
   @if (isAuthenticated()){
-    <a  mat-raised-button class="ml-2"
+    <a  mat-raised-button class="ml-3"
         (click)="logout()" >
       <mat-icon>power_settings_new</mat-icon>
       Déconnexion
     </a>
   } @else {
     @for (item of  navigationButtons;track item.name){
-      <a mat-raised-button routerLink="{{item.route}}" class="ml-2">
+      <a mat-raised-button routerLink="{{item.route}}" class="ml-3">
         <mat-icon>{{item.icon}}</mat-icon>
         {{item.name | titlecase}}
       </a>
@@ -43,7 +43,7 @@
   }
 </div>
 
-  <button mat-icon-button class="ml-2"  [matMenuTriggerFor]="themeMenu"  >
+  <button mat-icon-button class="ml-3"  [matMenuTriggerFor]="themeMenu"  >
     <mat-icon>format_color_fill</mat-icon>
   </button>
   <mat-menu #themeMenu>
@@ -60,8 +60,23 @@
     }
 
   </mat-menu>
-  <!-- badge panier -->
-  <div class="demo-section ml-2 mt-2" >
-    <mat-icon matBadge="{{countCartItems()}}">shopping_cart</mat-icon>
+  <!-- badge panier  bouton menu -->
+  <div  >
+    <button mat-icon-button  class="demo-section ml-3 mt-2" (click)="navigateToCart()">
+      <mat-icon matBadge="{{countCartItems()}}" >shopping_bag</mat-icon>
+    </button>
   </div>
+  <!--cart menu content-->
+<!--  <mat-menu #cartItemMenu>-->
+
+<!--    @if (cartItems().length > 0){-->
+<!--      @for (item of  cartItems(); track item.id){-->
+<!--        <button mat-menu-item style="display: flex" (click)="navigateToCart()">-->
+<!--          <img class="" [src]="host+item.product!.images[0].downloadUrl" alt="..." width="30" height="30">-->
+<!--          <span class="ml-2">{{item.product?.name | titlecase}}</span>-->
+<!--          <span class="">{{item.totalPrice | currency: 'XOF'}}</span>-->
+<!--        </button>-->
+<!--      }-->
+<!--    }-->
+<!--  </mat-menu>-->
 </mat-toolbar>

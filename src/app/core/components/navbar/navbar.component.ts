@@ -1,10 +1,20 @@
-import {Component, computed, DestroyRef, inject, OnInit, signal, Signal, WritableSignal} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  DestroyRef,
+  inject, OnDestroy,
+  OnInit, Signal,
+  signal, ViewChild, viewChild,
+  WritableSignal
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterLink } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
 import {NavItemButton} from '../../models/name.item.button';
 import {CommonModule, TitleCasePipe} from '@angular/common';
@@ -12,59 +22,75 @@ import {AuthService} from '../../../security/services/auth.service';
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {MatFormField, MatFormFieldModule, MatLabel} from '@angular/material/form-field';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
-import {Product} from '../../../product/models/product.model';
+import { ProductPage} from '../../../product/models/product.page.model';
 import { ProductService } from '../../../product/services/product.service';
-import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
-import {filter, map, Observable, startWith, Subscription} from 'rxjs';
+import { map, Observable, startWith, Subscription} from 'rxjs';
 import {MatInput} from '@angular/material/input';
 import {MatBadge} from '@angular/material/badge';
+import { CartService } from '../../../cart/services/cart.service';
+import { UserService } from '../../../security/services/user.service';
+import {User} from '../../../user/models/user.model';
+import {Cart} from '../../../cart/models/cart.model';
+import {Product} from '../../../product/models/product.model';
+import { environment } from '../../../../environments/environment.development';
+import {SnackBarComponent} from '../snack-bar/snack-bar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import {ProductListComponent} from '../../../product/components/product-list/product-list.component';
+import {CartComponent} from '../../../cart/components/cart/cart.component';
 
 @Component({
   selector: 'app-navbar',
   imports: [MatToolbarModule, MatMenuModule,
     CommonModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatLabel,
     MatListModule, RouterLink, TitleCasePipe, MatAutocomplete, MatOption, MatFormField, ReactiveFormsModule, MatAutocompleteTrigger, MatInput, MatBadge],
-  standalone:true,
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrl: './navbar.component.css',
+  changeDetection:ChangeDetectionStrategy.OnPush,
 })
 
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit,OnDestroy {
+
+
   countCartItems :WritableSignal<number>= signal(0);
   productService: ProductService = inject(ProductService);
   themeService:ThemeService = inject(ThemeService); //inject the theme in order to switch between light &dark mode
   authService:AuthService = inject(AuthService); // inject authentification service
   productNameControl = new FormControl<string  >('');
-  options!:Product[] ;
-
-
-  /**
-   * check if user is authenticated
-   */
-  isAuthenticated():boolean{
-    return !!this.authService.getCookieToken();
-  };
+  options!:Product[] ; // list of products
+  host:string = environment.host;
+  message = signal('');
+  userService:UserService = inject(UserService);
+  cartService:CartService = inject(CartService);
   private destroyRef:DestroyRef = inject(DestroyRef);
-
   filteredOptions!: Observable<Product[]>//;
-  prodSub = new Subscription();
+  cart:WritableSignal<Cart| undefined> = signal(undefined);
+  user:WritableSignal<User | undefined> = signal(undefined);
+  private prodSub!: Subscription;
+  private cartSubscription!:Subscription;
+  router :Router = inject(Router);
+  userSubscription!:Subscription;
+  headerProduct = viewChild(ProductListComponent);
+  allProducts= computed(()=> this.headerProduct()?.productCount())
+  //headerCart = viewChild(CartComponent);
+  @ViewChild(CartComponent) userCart !:CartComponent;
   /**
-   * sh
+   * show
    */
   ngOnInit():void {
-    const  productList:string[]= [];
-    this.prodSub = this.productService.getAllProducts()
-      .pipe(
-        map(
-          (products:Product[]) => {
-            this.options = [...products];
-            return  products;
-          }
-        )
-      )
-      .subscribe({complete:()=>{}})
-    this.destroyRef.onDestroy(()=> this.prodSub.unsubscribe());
+   // this.getProductsNameForAutoCompleteSelector();
 
+    console.log(this.options);
+    console.log('fu')
+    if(this.isAuthenticated()) {
+      this.userSubscription =  this.userService.getAllUsers()
+        .subscribe(users => {
+         const currentCart:WritableSignal<Cart| undefined>= this.getCartItemLength(this.isAuthenticated(), users)!;
+
+          console.log(this.countCartItems())
+        });
+    }
+    this.destroyRef.onDestroy(()=> this.userSubscription.unsubscribe());
+    //
     this.filteredOptions = this.productNameControl.valueChanges.pipe(
       startWith(''),
       map((value:Product| null | string) => {
@@ -73,6 +99,105 @@ export class NavbarComponent implements OnInit {
       }),
     );
   }
+
+
+  ngOnDestroy(): void {
+    this.cartSubscription.unsubscribe();
+
+  }
+
+  /**
+   * check if user is authenticated
+   */
+  public isAuthenticated():boolean {
+    return !!this.authService.getCookieToken();
+  };
+
+  /**
+   * get cart items
+   * @param isAuthenticated
+   * @param users
+   */
+  getCartItemLength(isAuthenticated:boolean, users:User[]) {
+    const user: User | undefined = this.getAuthenticatedUser(isAuthenticated, users);
+    if (!user) {
+      this.message.set("Utilisateur non authentifié ou non trouvé");
+      this.openSnackBar(this.message());
+      return;
+    }
+
+   this.cartSubscription = this.cartService.getCartByUserId(user.id).subscribe({
+      next: (result: Cart) => {
+        this.cart.set(result); // Évite undefined
+        const counter:number |undefined = result?.items?.length;
+        this.countCartItems.set(counter!);
+        this.user.set(user);
+        console.log(this.countCartItems());
+      },
+      error: (err) => {
+       // console.error(" :", err);
+        this.message.set("Erreur lors de la récupération du panier");
+        this.openSnackBar(this.message());
+      }
+    });
+    this.destroyRef.onDestroy(()=>this.cartSubscription);
+    return this.cart;
+  }
+
+
+
+  /**
+   * check if user is authenticated and return user
+   * @param isAuthenticated
+   * @param users
+   */
+  getAuthenticatedUser(isAuthenticated:boolean, users:User[] ):User | undefined{
+    const token:string = this.authService.getCookieToken();
+    if(!isAuthenticated && token == '' && users == undefined) {
+      return ;
+    }
+    const  userEmail : string= this.userService.getUserEmailFromPayload(token)!;
+    return users.find(user=>user.email == userEmail)!;
+  }
+
+  /**
+   * get the product's for auto complete selector
+   */
+  getProductsNameForAutoCompleteSelector():void {
+    // this.prodSub = this.productService.getAllProducts()
+    //   .pipe(
+    //     map(
+    //       (products:ProductPage) => {
+    //         this.options = [...products.content];
+    //         return  products;
+    //       }
+    //     )
+    //   )
+    //   .subscribe({complete:()=>{}})
+    // this.destroyRef.onDestroy(()=> this.prodSub.unsubscribe());
+  }
+
+  /**
+   * send user to cart view if user authenticated otherwise
+   * send him on login page
+   */
+  navigateToCart() {
+    const loggedUser:User | undefined = this.user();
+    if (!loggedUser) {
+      this.message.set("Veuillez vous connecter afin accèder au panier");
+      this.openSnackBar(this.message());
+      this.router.navigateByUrl('signup').then(() => {});
+    }else  if(this.cart()!.items!.length == 0) {
+      this.message.set("Votre panier est vide veuillez ajoutée des produits");
+      this.openSnackBar(this.message());
+    } else {
+      this.router.navigate([`cart/${this.cart()?.id}`]).then(() => {});
+    }
+
+
+  }
+
+
 
   /**
    * show product's name on field
@@ -97,6 +222,14 @@ export class NavbarComponent implements OnInit {
    */
   logout() {
     this.authService.destroyCookieToken();
+  }
+
+  /**
+   * open snack bar
+   */
+    snackBar = inject(MatSnackBar);
+    openSnackBar(message: string) {
+      this.snackBar.openFromComponent(SnackBarComponent, {data: message});
   }
 
   /**
@@ -134,5 +267,7 @@ export class NavbarComponent implements OnInit {
       route:'/signin',
     }
   ] ;
+
+
 
 }

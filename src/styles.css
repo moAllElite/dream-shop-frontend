@@ -76,6 +76,12 @@ body {
 }
 
 
-.primary{
-  background-color: var(--mat-sys-primary);
+.warn{
+  background-color: var(--mat-sys-secondary);
+  color: var(--mat-sys-tertiary-container);
+}
+
+.accent{
+  background-color: var(--mat-sys-tertiary);
+  color: var(--mat-sys-tertiary-container);
 }

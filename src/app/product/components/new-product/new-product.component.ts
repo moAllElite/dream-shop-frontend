@@ -1,22 +1,21 @@
 import { ApiResponse } from '../../models/api.response';
-import {Component, inject, OnDestroy, ChangeDetectionStrategy, WritableSignal, signal} from '@angular/core';
+import {Component, inject,  ChangeDetectionStrategy, WritableSignal, signal} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
 import { ProductService } from '../../services/product.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorMessage } from '../../../core/models/error-message';
 import { MatCardModule } from '@angular/material/card';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { Product } from '../../models/product.model';
 import { Router } from '@angular/router';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {ImageBottomSheetComponent} from '../image-bottom-sheet/image-bottom-sheet.component';
 import {MatSnackBar, MatSnackBarRef} from '@angular/material/snack-bar';
 import {SnackBarComponent} from '../../../core/components/snack-bar/snack-bar.component';
+import {Product} from '../../models/product.model';
 
 @Component({
   selector: 'app-new-product',
@@ -34,7 +33,6 @@ import {SnackBarComponent} from '../../../core/components/snack-bar/snack-bar.co
 })
 export class NewProductComponent  {
     productId: WritableSignal<number> = signal(0);
-    private readonly router:Router= inject(Router);
     productService :ProductService = inject(ProductService);//dependency inject
     private readonly _formBuilder = inject(FormBuilder);// dependency inject formbuilder
     private _bottomSheet:MatBottomSheet = inject(MatBottomSheet);
@@ -56,9 +54,8 @@ export class NewProductComponent  {
       /**
        * add new Product and save it before navigating to the product list
        */
-      saveProduct(){
+      saveProduct() {
         this.productService.saveProduct(this.form.value)
-          .pipe(takeUntilDestroyed())
         .subscribe(
           {
             next: (response:ApiResponse |ErrorMessage):void=>{
@@ -90,7 +87,7 @@ export class NewProductComponent  {
        horizontalPosition:'center'
      });
      snackBarRef.afterOpened().subscribe(() => {
-       this.form.reset();
+       form.reset();
      });
    }
 

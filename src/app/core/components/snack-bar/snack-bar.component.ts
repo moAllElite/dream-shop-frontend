@@ -18,4 +18,8 @@ export class SnackBarComponent {
   snackBarRef = inject(MatSnackBarRef);
 
   constructor(@Inject(MAT_SNACK_BAR_DATA) public message: string) { }
+  //hide the snack  bar
+  hideSnackBar() {
+   this.snackBarRef.dismissWithAction();
+  }
 }

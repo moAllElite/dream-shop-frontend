@@ -1,45 +1,65 @@
+<!---side navbar-->
 <mat-drawer-container class="example-container" autosize>
-    <!--drawer content -->
-    <mat-drawer #drawer class="example-sidenav" mode="side">
-      <!--values-->
-      <div class="example-label-container">
-        <label id="example-name-label" class="example-name-label">Value</label>
-        {{min()}} - {{max()}}
-      </div>
-      <!-- product filtered with range price -->
-        <mat-slider [min]="min" [max]="max">
-          <input value="300" matSliderStartThumb>
-          <input value="400" matSliderEndThumb >
-        </mat-slider>
-      <!-- price filter with slider -->
+  <!--drawer content -->
+  <mat-drawer #drawer class="example-sidenav ml-2" mode="side">
+    <h2 class="mt-5 mb-3">Recherche approfondie</h2>
+    <!--values-->
+    <div class="example-label-container">
+      <label id="example-name-label" class="example-name-label">Value</label>
+      {{mini}} - {{maxi}}
+    </div>
+    product filtered with range price
+    <mat-icon>monetization_on</mat-icon>
+    <mat-slider min="0" max="1000000" step="10000" showTickMarks discrete
+                (change)="filterPriceByMinMax()"
+                      [displayWith]="formatLabel">
+      <input [(value)]="mini" matSliderStartThumb>
+      <input [(value)]="maxi" matSliderEndThumb>
+    </mat-slider>
 
-    </mat-drawer>
-    <!-- end drawer content -->
 
+
+    <!-- end price filter with slider -->
+
+  </mat-drawer>
+  <!-- end drawer content -->
+  <!-- grid products-->
   <div style="display:block;">
-  <div class="example-sidenav-content" >
-    <button type="button" mat-button class="mt-2 ml-6 primary" (click)="drawer.toggle()">
-      Recherche approfondie
-    </button>
-  </div>
-  <!-- list of products -->
-
-  @if (products()){
-    <div class="main-content"
-         [style]="
+    <div class="example-sidenav-content" >
+      <button type="button" mat-button class="mt-2 ml-6 primary" (click)="drawer.toggle()">
+        Recherche approfondie
+      </button>
+      <button (click)="showBtnsheet()">show bottom sheet</button>
+    </div>
+    @if (productsPage()){
+      <!-- list of products -->
+      <div class="main-content "
+           [style]="
       ( productCount() % 2 === 0  )
      ? centerStyle:alignStart">
-      @for (product of products();track product.id) {
+        @for (product of productsPage()!.content;track $index) {
 
-        <app-product-card [product]="product"></app-product-card>
-      }
+          <app-product-card [product]="product"></app-product-card>
+        }
+      </div>
+      <!-- paginator -->
+     <div style="padding-right: 4.5em;">
+      <mat-paginator [length]="length"
+                     [pageSize]="pageSize"
+                     [pageIndex]="pageIndex"
+                     (page)="handlePageEvent($event)"
+                     [pageSizeOptions]="[5, 10, 25, 100]"
+                     aria-label="Select page">
+      </mat-paginator>
     </div>
-  }@else {
-    <div class="main-content"
-         style="display: flex; justify-content: center; align-items: center;">
-      <h1>Aucun produits n'est encore ajoutés</h1>
-    </div>
-  }
+      <!-- end paginator -->
+    }
+    @else {
+      <div class="main-content"
+           style="display: flex; justify-content: center; align-items: center;">
+        <h1>Aucun produits n'est encore ajoutés</h1>
+      </div>
+    }
 
   </div>
   <!-- end list of products -->

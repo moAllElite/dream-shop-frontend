@@ -1,7 +1,9 @@
 
-mat-snackbar {
-  container-color: var(--mat-sys-secondary);
-  supporting-text-color: var(--mat-sys-primary);
-  button-color: var(--mat-sys-primary);
+mat-snackbar,.custom-snack {
+  container-color: var(--mat-sys-on-secondary);
+  supporting-text-color: var(--mat-sys-on-primary);
+  button-color: var(--mat-sys-on-primary);
   text-align: center;
+  background: var(--mat-sys-primary);
 }
+

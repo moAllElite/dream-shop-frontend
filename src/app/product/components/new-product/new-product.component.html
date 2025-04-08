@@ -46,7 +46,7 @@
           <div class="is-centered">
             <button mat-button matStepperPrevious class="ml-3">Retour</button>
             <button mat-stroked-button class="ml-3" (click)="stepper.reset()">Reset</button>
-            <button mat-raised-button class="ml-3" (click)="saveProduct()" [disabled]="form.invalid">Enregistrer</button>
+            <button mat-raised-button class="ml-3" (click)=" openBottomSheet()"  >Enregistrer</button>
           </div>
         </div>
       </form>

@@ -1,7 +1,6 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit, Signal, signal, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
 import {MatStepperModule} from '@angular/material/stepper';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
@@ -20,7 +19,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {finalize, merge} from 'rxjs';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {MatRipple} from '@angular/material/core';
-import {User} from '../../models/user';
+import {User} from '../../../user/models/user.model';
 import {HttpErrorResponse} from '@angular/common/http';
 import {SnackBarComponent} from '../../../core/components/snack-bar/snack-bar.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
