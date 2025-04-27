@@ -1,0 +1,98 @@
+
+.cart-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  margin: 1em 0 0 0;
+  flex-wrap: wrap;
+}
+
+.has-text-centered {
+  text-align: center;
+}
+
+
+.cart-summary {
+  width: 30%;
+  padding: 20px;
+}
+
+.product-image {
+  width: 80px;
+  height: auto;
+}
+
+.mat-form-field {
+  width: 60px;
+}
+.mat-column-name{
+  width: 150px;
+}
+.total-price {
+  font-size: 1.5em;
+  color: var(--mat-sys-secondary);
+}
+.clear-cart{
+  background-color: var(--mat-sys-error-container);
+  color: var(--mat-sys-error);
+  border-color: var(--mat-sys-error);
+  width: 100%;
+  margin-top: 20px;
+}
+.checkout-btn {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.cart-benefits {
+  margin-top: 10px;
+  font-size: 0.9em;
+}
+
+
+@media (max-width: 1080px) {
+  .clear-cart{
+    margin-top: 10px;
+    width: 50%;
+    align-items: center;
+  }
+
+  .checkout-btn {
+    width: 50%;
+    margin: 0 0 0 5%;
+  }
+  .mat-column-name{
+    width: 100px;
+  }
+  .cart-container {
+    flex-direction: column;
+    display: block;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .quantity {
+    text-align: center;
+  }
+  .input-quantity{
+    width: 10%;
+  }
+  .cart-table {
+    margin: 0 10px 55px 0;
+    min-width: 300px;
+  }
+  .mat-column-quantity{
+    width: 12px;
+    padding-right: 24px;
+    text-align: center;
+  }
+  .mat-mdc-input-element{
+    max-width: 32px;
+    width: 100px;
+  }
+  .cart-summary {
+    min-width:30%;
+    width: 100%;
+  }
+}
+

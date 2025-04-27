@@ -63,7 +63,7 @@
   <!-- badge panier  bouton menu -->
   <div  >
     <button mat-icon-button  class="demo-section ml-3 mt-2" (click)="navigateToCart()">
-      <mat-icon matBadge="{{countCartItems()}}" >shopping_bag</mat-icon>
+      <mat-icon matBadge="{{cartItemLength()}}" >shopping_bag</mat-icon>
     </button>
   </div>
   <!--cart menu content-->
@@ -71,7 +71,7 @@
 
 <!--    @if (cartItems().length > 0){-->
 <!--      @for (item of  cartItems(); track item.id){-->
-<!--        <button mat-menu-item style="display: flex" (click)="navigateToCart()">-->
+<!--        <button mat  -menu-item style="display: flex" (click)="navigateToCart()">-->
 <!--          <img class="" [src]="host+item.product!.images[0].downloadUrl" alt="..." width="30" height="30">-->
 <!--          <span class="ml-2">{{item.product?.name | titlecase}}</span>-->
 <!--          <span class="">{{item.totalPrice | currency: 'XOF'}}</span>-->

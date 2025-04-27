@@ -10,4 +10,5 @@ import { NavbarComponent } from "./core/components/navbar/navbar.component";
 })
 export class AppComponent {
   title = 'dream shop';
+
 }

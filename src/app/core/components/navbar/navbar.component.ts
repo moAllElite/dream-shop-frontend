@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  DestroyRef,
+  DestroyRef, effect,
   inject, OnDestroy,
   OnInit, Signal,
   signal, ViewChild, viewChild,
@@ -37,6 +37,7 @@ import {SnackBarComponent} from '../snack-bar/snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {ProductListComponent} from '../../../product/components/product-list/product-list.component';
 import {CartComponent} from '../../../cart/components/cart/cart.component';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-navbar',
@@ -70,27 +71,20 @@ export class NavbarComponent implements OnInit,OnDestroy {
   router :Router = inject(Router);
   userSubscription!:Subscription;
   headerProduct = viewChild(ProductListComponent);
-  allProducts= computed(()=> this.headerProduct()?.productCount())
-  //headerCart = viewChild(CartComponent);
-  @ViewChild(CartComponent) userCart !:CartComponent;
   /**
    * show
    */
   ngOnInit():void {
    // this.getProductsNameForAutoCompleteSelector();
 
-    console.log(this.options);
-    console.log('fu')
     if(this.isAuthenticated()) {
       this.userSubscription =  this.userService.getAllUsers()
         .subscribe(users => {
          const currentCart:WritableSignal<Cart| undefined>= this.getCartItemLength(this.isAuthenticated(), users)!;
-
           console.log(this.countCartItems())
         });
     }
-    this.destroyRef.onDestroy(()=> this.userSubscription.unsubscribe());
-    //
+
     this.filteredOptions = this.productNameControl.valueChanges.pipe(
       startWith(''),
       map((value:Product| null | string) => {
@@ -98,12 +92,12 @@ export class NavbarComponent implements OnInit,OnDestroy {
         return name ? this._filter(name as string) : this.options?.slice();
       }),
     );
+    this.destroyRef.onDestroy(()=> this.userSubscription.unsubscribe());
   }
 
 
   ngOnDestroy(): void {
     this.cartSubscription.unsubscribe();
-
   }
 
   /**
@@ -113,11 +107,35 @@ export class NavbarComponent implements OnInit,OnDestroy {
     return !!this.authService.getCookieToken();
   };
 
+
+  //get all users
+  allUsers:Signal<User [ ]| undefined> = toSignal(
+    this.userService.getAllUsers()
+
+  );
   /**
    * get cart items
    * @param isAuthenticated
    * @param users
    */
+  cartItemLength = signal(0);
+  cartItemLengthEffect  = effect(
+    ()=> {
+     const isUserAuthenticated:boolean= !this.authService.getCookieToken();
+      if(this.allUsers()){
+        const user: User | undefined = this.getAuthenticatedUser(isUserAuthenticated, this.allUsers());
+        return this.cartService.getCartByUserId(user!.id)
+          .pipe(
+            map((value)=>{
+              this.cartItemLength.set(value.items!.length)
+            })
+          );
+      }else {
+        return ;
+      }
+
+    }
+  )
   getCartItemLength(isAuthenticated:boolean, users:User[]) {
     const user: User | undefined = this.getAuthenticatedUser(isAuthenticated, users);
     if (!user) {
@@ -151,13 +169,13 @@ export class NavbarComponent implements OnInit,OnDestroy {
    * @param isAuthenticated
    * @param users
    */
-  getAuthenticatedUser(isAuthenticated:boolean, users:User[] ):User | undefined{
+  getAuthenticatedUser(isAuthenticated:boolean, users:User[] | undefined ):User | undefined{
     const token:string = this.authService.getCookieToken();
     if(!isAuthenticated && token == '' && users == undefined) {
       return ;
     }
     const  userEmail : string= this.userService.getUserEmailFromPayload(token)!;
-    return users.find(user=>user.email == userEmail)!;
+    return users!.find(user=>user.email == userEmail)!;
   }
 
   /**

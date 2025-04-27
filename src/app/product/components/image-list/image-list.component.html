@@ -1,0 +1,11 @@
+<div class="image-list" fxLayout="row">
+  @for (image of images() ; track  image.id){
+    <ng-container >
+      <app-product-image-list-item
+        class="image-list__item"
+        [image]="image" [style.margin]="layoutGap + 'px'"
+        (click)="onImageListItemClick(image)">
+      </app-product-image-list-item>
+    </ng-container>
+  }
+</div>

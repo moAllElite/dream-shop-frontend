@@ -1,0 +1,16 @@
+@if (image){
+  <div class="image-list-item">
+    <div fxFlexFill
+         class="image-list-item__image"
+         [style.background-image]="'url(' + (this.host + this.image!.downloadUrl) + ')'"
+         [style.background-size]="'cover'"
+         [style.background-position]="'center'"
+         [style.width]="'100%'"
+         [style.height]="'135px'">
+    </div>
+    <div class="image-list-item__caption">
+      {{ image!.fileName}}
+    </div>
+  </div>
+}
+

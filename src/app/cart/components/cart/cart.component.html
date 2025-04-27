@@ -1,0 +1,90 @@
+<!--@defer (when cartItems();){
+  <div class="cart-container">
+      &lt;!&ndash;cart items table view &ndash;&gt;
+      <app-cart-item-table
+        [cartId]="cartId()"
+        [cartItems]="cart()!.items!"
+        [dataSource]="dataSource"
+        (onCartItemRemoved)="handleUpdateCartItem(cartId())"
+        [pageSizeOptions]="pageSizeOptions"
+        [pageSize]="pageSize"
+        (onPageEvent)="handlePageEvent($event)"/>
+
+    &lt;!&ndash; order options or empty cart -&ndash;&gt;
+    <mat-card class="cart-summary mr-2">
+      <h3>Totals du panier</h3>
+      <p><strong>Montant dû:</strong> <span class="total-price ml-3">{{ getTotalBillingAmount() | currency:'XOF':'code' }}.00</span></p>
+      <form #orderForm="ngForm" (ngSubmit)="onOrderProduct(orderForm)">
+        <input type="hidden"  name="user_id"  id="user_id"  [(ngModel)]="userId">
+        @if (orderForm.invalid && orderForm.touched) {
+          <div>
+            Utilisateur introuvable ou panier vide
+          </div>
+        }
+        <button mat-raised-button color="primary" type="submit" class="checkout-btn">
+          Procédé à la commande
+        </button>
+      </form>
+      <form (ngSubmit)="clearCart(clearCartForm)" #clearCartForm="ngForm">
+        <input type="hidden"  name="cart_id"  id="cart_id"  [(ngModel)]="cartId">
+        <button class="clear-cart" mat-stroked-button type="submit">
+          <mat-icon>remove_shopping_cart</mat-icon> Vidé le panier
+        </button>
+      </form>
+      <div class="cart-benefits">
+        <p>✔ 365-Jours de Retours</p>
+        <p>✔ No Sales Tax</p>
+        <p>✔ Fully Customizable</p>
+        <p>✔ 24/7 Customer Care</p>
+      </div>
+    </mat-card>
+  </div>
+} @loading (minimum 500ms){
+  <app-loading-spinner></app-loading-spinner>
+}-->
+
+
+@if (cartResource.isLoading()) {
+  <app-loading-spinner></app-loading-spinner>
+} @else {
+  <div class="cart-container">
+    <!--cart items table view -->
+    <app-cart-item-table
+      [cartId]="cartId()"
+      [cartItems]="cartResource.value()!.items!"
+      [dataSource]="dataSource"
+      (onCartItemRemoved)="handleUpdateCartItem(cartId())"
+      [pageSizeOptions]="pageSizeOptions"
+      [pageSize]="pageSize"
+      (onPageEvent)="handlePageEvent($event)"/>
+
+    <!-- order options or empty cart --->
+    <mat-card class="cart-summary mr-2">
+      <h3>Totals du panier</h3>
+      <p><strong>Montant dû:</strong> <span class="total-price ml-3">{{ getTotalBillingAmount() | currency:'XOF':'code' }}.00</span></p>
+      <form #orderForm="ngForm" (ngSubmit)="onOrderProduct(orderForm)">
+        <input type="hidden"  name="user_id"  id="user_id"  [(ngModel)]="userId">
+        @if (orderForm.invalid && orderForm.touched) {
+          <div>
+            Utilisateur introuvable ou panier vide
+          </div>
+        }
+        <button mat-raised-button color="primary" type="submit" class="checkout-btn">
+          Procédé à la commande
+        </button>
+      </form>
+      <form (ngSubmit)="clearCart(clearCartForm)" #clearCartForm="ngForm">
+        <input type="hidden"  name="cart_id"  id="cart_id"  [(ngModel)]="cartId">
+        <button class="clear-cart" mat-stroked-button type="submit">
+          <mat-icon>remove_shopping_cart</mat-icon> Vidé le panier
+        </button>
+      </form>
+      <div class="cart-benefits">
+        <p>✔ 365-Jours de Retours</p>
+        <p>✔ No Sales Tax</p>
+        <p>✔ Fully Customizable</p>
+        <p>✔ 24/7 Customer Care</p>
+      </div>
+    </mat-card>
+  </div>
+}
