@@ -17,7 +17,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import {Router, RouterLink} from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
 import {NavItemButton} from '../../models/name.item.button';
-import {CommonModule, TitleCasePipe} from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import {AuthService} from '../../../security/services/auth.service';
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {MatFormField, MatFormFieldModule, MatLabel} from '@angular/material/form-field';
